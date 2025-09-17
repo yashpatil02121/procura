@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import ConfirmationDialog from '../components/ConfirmationDialog';
 
 export default function Products() {
     const navigate = useNavigate();
@@ -25,6 +26,9 @@ export default function Products() {
         phone: ''
     });
     const [creatingOrder, setCreatingOrder] = useState(false);
+
+    // Delete confirmation state
+    const [productToDelete, setProductToDelete] = useState(null);
 
     const styles = {
         container: {
@@ -336,6 +340,39 @@ export default function Products() {
                 }
             }
         }
+    };
+
+    const confirmDeleteProduct = (product) => {
+        setProductToDelete(product);
+    };
+
+    const handleConfirmDelete = async () => {
+        if (!productToDelete) return;
+
+        try {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                navigate('/login');
+                return;
+            }
+            
+            await axios.delete(`http://localhost:3000/products/${productToDelete.id}`, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            fetchProducts();
+            setProductToDelete(null);
+        } catch (err) {
+            setError('Failed to delete product');
+            if (err.response?.status === 401) {
+                localStorage.removeItem('token');
+                localStorage.removeItem('user');
+                navigate('/login');
+            }
+        }
+    };
+
+    const cancelDelete = () => {
+        setProductToDelete(null);
     };
 
     const resetForm = () => {
@@ -804,7 +841,7 @@ export default function Products() {
                                                 Edit
                                             </button>
                                             <button
-                                                onClick={() => handleDelete(product.id)}
+                                                onClick={() => confirmDeleteProduct(product)}
                                                 style={{
                                                     ...styles.deleteButton,
                                                     ':hover': styles.deleteButtonHover
@@ -820,6 +857,19 @@ export default function Products() {
                     </div>
                 )}
             </div>
+
+            {/* Confirmation Dialog for Delete */}
+            {productToDelete && (
+                <ConfirmationDialog
+                    isOpen={!!productToDelete}
+                    onClose={cancelDelete}
+                    onConfirm={handleConfirmDelete}
+                    title="Confirm Deletion"
+                    message={`Are you sure you want to delete the product "${productToDelete.name}"? This action cannot be undone.`}
+                    confirmText="Delete"
+                    cancelText="Cancel"
+                />
+            )}
         </div>
     );
 }
