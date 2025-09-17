@@ -1,9 +1,11 @@
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import ConfirmationDialog from '../components/ConfirmationDialog';
 
 export default function Home() {
     const navigate = useNavigate();
     const [user, setUser] = useState(null);
+    const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
 
     const styles = {
         container: {
@@ -88,13 +90,27 @@ export default function Home() {
         setUser(null);
     };
 
+    const confirmLogout = () => {
+        setShowLogoutConfirm(true);
+    };
+
+    const handleConfirmLogout = () => {
+        handleLogout();
+        navigate('/login');
+        setShowLogoutConfirm(false);
+    };
+
+    const cancelLogout = () => {
+        setShowLogoutConfirm(false);
+    };
+
     return (
         <div style={styles.container}>
             {user && (
                 <div style={styles.userInfo}>
                     <span style={styles.welcomeText}>Welcome, {user.name}!</span>
                     <button 
-                        onClick={handleLogout}
+                        onClick={confirmLogout}
                         style={{
                             ...styles.logoutButton,
                             ':hover': styles.logoutButtonHover
@@ -150,6 +166,17 @@ export default function Home() {
                     </button>
                 </div>
             )}
+            
+            <ConfirmationDialog
+                isOpen={showLogoutConfirm}
+                onClose={cancelLogout}
+                onConfirm={handleConfirmLogout}
+                title="Confirm Logout"
+                message="Are you sure you want to log out?"
+                confirmText="Log Out"
+                cancelText="Cancel"
+                type="warning"
+            />
         </div>
     );
 }
