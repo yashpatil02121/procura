@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "target": "ES2021",                      // ✅ ES2021 is safer for Node 18/20
+    "module": "commonjs",                    // ✅ Use commonjs (or nodenext if you really want ESM)
+    "moduleResolution": "node",              // ✅ Standard Node resolution
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+
+    "declaration": true,
+    "removeComments": true,
+    "isolatedModules": false,                // ❌ should be false, otherwise decorators can break
+    "resolveJsonModule": true,
+    "incremental": true,
+
+    "sourceMap": true,
+    "outDir": "./dist",
+    "baseUrl": "./"
+  },
+  "include": ["src"],
+  "exclude": ["node_modules", "dist"]
+}
