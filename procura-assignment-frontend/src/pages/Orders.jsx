@@ -8,6 +8,105 @@ export default function Orders() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
 
+    const styles = {
+        container: {
+            minHeight: '100vh',
+            minWidth: '100vw',
+            background: 'linear-gradient(to bottom right, #bae6fd, #3b82f6)',
+            padding: '2rem',
+            fontFamily: 'Arial, sans-serif',
+        },
+        contentContainer: {
+            maxWidth: '72rem',
+            margin: '0 auto',
+            backgroundColor: 'white',
+            borderRadius: '0.75rem',
+            boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
+            padding: '2rem',
+        },
+        header: {
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            marginBottom: '1.5rem',
+        },
+        headerTitle: {
+            fontSize: '2rem',
+            fontWeight: 'bold',
+            color: '#1f2937',
+        },
+        button: {
+            padding: '0.5rem 1rem',
+            backgroundColor: 'white',
+            color: '#3b82f6',
+            border: 'none',
+            borderRadius: '0.5rem',
+            cursor: 'pointer',
+            transition: 'all 0.3s ease',
+            fontWeight: 'bold',
+            boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+        },
+        buttonHover: {
+            transform: 'scale(1.05)',
+            backgroundColor: '#f0f9ff',
+        },
+        backButton: {
+            backgroundColor: '#6b7280',
+            color: 'white',
+        },
+        logoutButton: {
+            backgroundColor: '#ef4444',
+            color: 'white',
+        },
+        errorMessage: {
+            backgroundColor: '#fee2e2',
+            color: '#b91c1c',
+            padding: '0.75rem',
+            borderRadius: '0.5rem',
+            marginBottom: '1.5rem',
+        },
+        loadingContainer: {
+            minHeight: '100vh',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            background: 'linear-gradient(to bottom right, #bae6fd, #3b82f6)',
+        },
+        loadingText: {
+            fontSize: '1.25rem',
+            color: 'white',
+        },
+        orderCard: {
+            border: '1px solid #e5e7eb',
+            borderRadius: '0.5rem',
+            padding: '1rem',
+            marginBottom: '1rem',
+            backgroundColor: 'white',
+            boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+        },
+        orderTitle: {
+            fontSize: '1.125rem',
+            fontWeight: 'bold',
+            color: '#111827',
+            marginBottom: '0.5rem',
+        },
+        orderDetails: {
+            fontSize: '0.875rem',
+            color: '#6b7280',
+            marginBottom: '0.5rem',
+        },
+        orderTotal: {
+            fontSize: '1.25rem',
+            fontWeight: 'bold',
+            color: '#10b981',
+        },
+        noOrdersMessage: {
+            textAlign: 'center',
+            color: '#6b7280',
+            padding: '2rem',
+        }
+    };
+
     useEffect(() => {
         const token = localStorage.getItem('token');
         console.log('Orders useEffect - Token check:', token ? 'Token exists' : 'No token');
@@ -57,55 +156,63 @@ export default function Orders() {
 
     if (loading) {
         return (
-            <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-                <div className="text-xl">Loading...</div>
+            <div style={styles.loadingContainer}>
+                <div style={styles.loadingText}>Loading...</div>
             </div>
         );
     }
 
     return (
-        <div className="min-h-screen bg-gray-100 p-8">
-            <div className="max-w-6xl mx-auto">
-                <div className="mb-6 flex justify-between items-center">
+        <div style={styles.container}>
+            <div style={styles.contentContainer}>
+                <div style={styles.header}>
                     <button 
                         onClick={() => navigate('/')}
-                        className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
+                        style={{
+                            ...styles.button,
+                            ...styles.backButton,
+                            ':hover': styles.buttonHover
+                        }}
                     >
                         ← Back to Home
                     </button>
                     <button 
                         onClick={handleLogout}
-                        className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                        style={{
+                            ...styles.button,
+                            ...styles.logoutButton,
+                            ':hover': styles.buttonHover
+                        }}
                     >
                         Logout
                     </button>
                 </div>
 
-                <div className="bg-white rounded-lg shadow-lg p-8">
-                    <h1 className="text-3xl font-bold text-gray-800 mb-6">Orders</h1>
-                    
-                    {error && (
-                        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
-                            {error}
-                        </div>
-                    )}
+                <h1 style={styles.headerTitle}>Orders</h1>
+                
+                {error && (
+                    <div style={styles.errorMessage}>
+                        {error}
+                    </div>
+                )}
 
-                    {orders.length === 0 ? (
-                        <p className="text-gray-600 text-center py-8">No orders found.</p>
-                    ) : (
-                        <div className="space-y-4">
-                            {orders.map((order) => (
-                                <div key={order.id} className="border border-gray-200 rounded-lg p-4">
-                                    <h3 className="text-lg font-semibold">Order #{order.id}</h3>
-                                    <p className="text-sm text-gray-600">
-                                        Customer: {order.customer.name} ({order.customer.phone})
-                                    </p>
-                                    <p className="text-lg font-bold">${parseFloat(order.total_amount).toFixed(2)}</p>
-                                </div>
-                            ))}
-                        </div>
-                    )}
-                </div>
+                {orders.length === 0 ? (
+                    <p style={styles.noOrdersMessage}>No orders found.</p>
+                ) : (
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                        {orders.map((order) => (
+                            <div key={order.id} style={styles.orderCard}>
+                                <h3 style={styles.orderTitle}>Order #{order.id}</h3>
+                                <p style={styles.orderDetails}>
+                                    Customer: {order.customer.name} ({order.customer.phone})
+                                </p>
+                                <p style={styles.orderTotal}>
+                                    ${parseFloat(order.total_amount).toFixed(2)}
+                                </p>
+                            </div>
+                        ))}
+                    </div>
+                )}
             </div>
         </div>
     );

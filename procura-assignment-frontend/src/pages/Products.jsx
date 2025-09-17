@@ -26,6 +26,185 @@ export default function Products() {
     });
     const [creatingOrder, setCreatingOrder] = useState(false);
 
+    const styles = {
+        container: {
+            minHeight: '100vh',
+            minWidth: '100vw',
+            background: 'linear-gradient(to bottom right, #bae6fd, #3b82f6)',
+            padding: '2rem',
+            fontFamily: 'Arial, sans-serif',
+        },
+        contentContainer: {
+            maxWidth: '72rem',
+            margin: '0 auto',
+            backgroundColor: 'white',
+            borderRadius: '0.75rem',
+            boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
+            padding: '2rem',
+        },
+        header: {
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            marginBottom: '1.5rem',
+        },
+        headerTitle: {
+            fontSize: '2rem',
+            fontWeight: 'bold',
+            color: '#1f2937',
+        },
+        button: {
+            padding: '0.5rem 1rem',
+            backgroundColor: 'white',
+            color: '#3b82f6',
+            border: 'none',
+            borderRadius: '0.5rem',
+            cursor: 'pointer',
+            transition: 'all 0.3s ease',
+            fontWeight: 'bold',
+            boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+        },
+        buttonHover: {
+            transform: 'scale(1.05)',
+            backgroundColor: '#f0f9ff',
+        },
+        backButton: {
+            backgroundColor: '#6b7280',
+            color: 'white',
+        },
+        logoutButton: {
+            backgroundColor: '#ef4444',
+            color: 'white',
+        },
+        errorMessage: {
+            backgroundColor: '#fee2e2',
+            color: '#b91c1c',
+            padding: '0.75rem',
+            borderRadius: '0.5rem',
+            marginBottom: '1.5rem',
+        },
+        loadingContainer: {
+            minHeight: '100vh',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            background: 'linear-gradient(to bottom right, #bae6fd, #3b82f6)',
+        },
+        loadingText: {
+            fontSize: '1.25rem',
+            color: 'white',
+        },
+        table: {
+            width: '100%',
+            borderCollapse: 'collapse',
+        },
+        tableHeader: {
+            backgroundColor: '#f9fafb',
+            textTransform: 'uppercase',
+            fontSize: '0.75rem',
+            color: '#6b7280',
+            fontWeight: 'bold',
+            padding: '0.75rem',
+            textAlign: 'left',
+        },
+        tableRow: {
+            borderBottom: '1px solid #e5e7eb',
+        },
+        tableCell: {
+            padding: '0.75rem',
+            fontSize: '0.875rem',
+            color: '#111827',
+        },
+        actionButton: {
+            marginRight: '0.5rem',
+            color: '#3b82f6',
+            cursor: 'pointer',
+            transition: 'color 0.3s ease',
+        },
+        actionButtonHover: {
+            color: '#1d4ed8',
+        },
+        deleteButton: {
+            color: '#ef4444',
+            cursor: 'pointer',
+            transition: 'color 0.3s ease',
+        },
+        deleteButtonHover: {
+            color: '#b91c1c',
+        },
+        modalOverlay: {
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            zIndex: 50,
+        },
+        modalContent: {
+            backgroundColor: 'white',
+            borderRadius: '0.5rem',
+            padding: '2rem',
+            width: '24rem',
+            maxWidth: '90%',
+            boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
+        },
+        modalTitle: {
+            fontSize: '1.125rem',
+            fontWeight: 'bold',
+            marginBottom: '1rem',
+            color: '#111827',
+        },
+        input: {
+            width: '100%',
+            padding: '0.75rem',
+            border: '1px solid #d1d5db',
+            borderRadius: '0.5rem',
+            marginTop: '0.25rem',
+            transition: 'all 0.3s ease',
+        },
+        inputFocus: {
+            outline: 'none',
+            borderColor: '#3b82f6',
+            boxShadow: '0 0 0 3px rgba(59, 130, 246, 0.5)',
+        },
+        label: {
+            display: 'block',
+            fontSize: '0.875rem',
+            color: '#4b5563',
+            marginBottom: '0.5rem',
+        },
+        submitButton: {
+            width: '100%',
+            padding: '0.75rem',
+            backgroundColor: '#3b82f6',
+            color: 'white',
+            border: 'none',
+            borderRadius: '0.5rem',
+            cursor: 'pointer',
+            transition: 'all 0.3s ease',
+        },
+        submitButtonHover: {
+            backgroundColor: '#2563eb',
+        },
+        cancelButton: {
+            width: '100%',
+            padding: '0.75rem',
+            backgroundColor: '#6b7280',
+            color: 'white',
+            border: 'none',
+            borderRadius: '0.5rem',
+            cursor: 'pointer',
+            transition: 'all 0.3s ease',
+        },
+        cancelButtonHover: {
+            backgroundColor: '#4b5563',
+        },
+    };
+
     useEffect(() => {
         const token = localStorage.getItem('token');
         console.log('Products useEffect - Token check:', token ? 'Token exists' : 'No token');
@@ -289,289 +468,357 @@ export default function Products() {
 
     if (loading) {
         return (
-            <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-                <div className="text-xl">Loading...</div>
+            <div style={styles.loadingContainer}>
+                <div style={styles.loadingText}>Loading...</div>
             </div>
         );
     }
 
     return (
-        <div className="min-h-screen bg-gray-100 p-8">
-            <div className="max-w-6xl mx-auto">
-                {/* Header */}
-                <div className="mb-6 flex justify-between items-center">
+        <div style={styles.container}>
+            <div style={styles.contentContainer}>
+                <div style={styles.header}>
                     <button 
                         onClick={() => navigate('/')}
-                        className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
+                        style={{
+                            ...styles.button,
+                            ...styles.backButton,
+                            ':hover': styles.buttonHover
+                        }}
                     >
                         ← Back to Home
                     </button>
                     <button 
                         onClick={handleLogout}
-                        className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                        style={{
+                            ...styles.button,
+                            ...styles.logoutButton,
+                            ':hover': styles.buttonHover
+                        }}
                     >
                         Logout
                     </button>
                 </div>
 
-                {/* Main Content */}
-                <div className="bg-white rounded-lg shadow-lg p-8">
-                    <div className="flex justify-between items-center mb-6">
-                        <h1 className="text-3xl font-bold text-gray-800">Products</h1>
-                        <div className="flex space-x-3">
-                            {selectedProducts.size > 0 && (
-                                <button
-                                    onClick={() => setShowOrderForm(true)}
-                                    className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded flex items-center"
-                                >
-                                    Create Order ({selectedProducts.size} items)
-                                </button>
-                            )}
+                <div style={styles.header}>
+                    <h1 style={styles.headerTitle}>Products</h1>
+                    <div style={{ display: 'flex', gap: '0.75rem' }}>
+                        {selectedProducts.size > 0 && (
                             <button
-                                onClick={() => setShowForm(true)}
-                                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                                onClick={() => setShowOrderForm(true)}
+                                style={{
+                                    ...styles.button,
+                                    backgroundColor: '#10b981',
+                                    color: 'white',
+                                    ':hover': {
+                                        ...styles.buttonHover,
+                                        backgroundColor: '#059669'
+                                    }
+                                }}
                             >
-                                Add Product
+                                Create Order ({selectedProducts.size} items)
                             </button>
-                        </div>
+                        )}
+                        <button
+                            onClick={() => setShowForm(true)}
+                            style={{
+                                ...styles.button,
+                                ':hover': styles.buttonHover
+                            }}
+                        >
+                            Add Product
+                        </button>
                     </div>
+                </div>
 
-                    {error && (
-                        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
-                            {error}
-                        </div>
-                    )}
+                {error && (
+                    <div style={styles.errorMessage}>
+                        {error}
+                    </div>
+                )}
 
-                    {/* Product Form Modal */}
-                    {showForm && (
-                        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
-                            <div className="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
-                                <h3 className="text-lg font-bold text-gray-900 mb-4">
-                                    {editingProduct ? 'Edit Product' : 'Add New Product'}
-                                </h3>
-                                <form onSubmit={handleSubmit} className="space-y-4">
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700">Code</label>
-                                        <input
-                                            type="text"
-                                            value={formData.code}
-                                            onChange={(e) => setFormData({ ...formData, code: e.target.value })}
-                                            className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2"
-                                            required
-                                        />
-                                    </div>
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700">Name</label>
-                                        <input
-                                            type="text"
-                                            value={formData.name}
-                                            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                                            className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2"
-                                            required
-                                        />
-                                    </div>
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700">Description</label>
-                                        <textarea
-                                            value={formData.description}
-                                            onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                                            className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2"
-                                            rows="3"
-                                        />
-                                    </div>
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700">Rate</label>
-                                        <input
-                                            type="number"
-                                            step="0.01"
-                                            value={formData.rate}
-                                            onChange={(e) => setFormData({ ...formData, rate: e.target.value })}
-                                            className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2"
-                                            required
-                                        />
-                                    </div>
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700">Image URL</label>
-                                        <input
-                                            type="url"
-                                            value={formData.image}
-                                            onChange={(e) => setFormData({ ...formData, image: e.target.value })}
-                                            className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2"
-                                        />
-                                    </div>
-                                    <div className="flex space-x-3">
-                                        <button
-                                            type="submit"
-                                            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex-1"
-                                        >
-                                            {editingProduct ? 'Update' : 'Create'}
-                                        </button>
-                                        <button
-                                            type="button"
-                                            onClick={resetForm}
-                                            className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded flex-1"
-                                        >
-                                            Cancel
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    )}
-
-                    {/* Order Creation Modal */}
-                    {showOrderForm && (
-                        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
-                            <div className="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
-                                <h3 className="text-lg font-bold text-gray-900 mb-4">
-                                    Create Order
-                                </h3>
-
-                                {/* Selected Products Summary */}
-                                <div className="mb-4 p-3 bg-gray-50 rounded">
-                                    <h4 className="font-medium text-gray-700 mb-2">Selected Products:</h4>
-                                    {Array.from(selectedProducts.entries()).map(([productId, quantity]) => {
-                                        const product = products.find(p => p.id === productId);
-                                        return product ? (
-                                            <div key={productId} className="flex justify-between text-sm">
-                                                <span>{product.name} x {quantity}</span>
-                                                <span>${(product.rate * quantity).toFixed(2)}</span>
-                                            </div>
-                                        ) : null;
-                                    })}
-                                    <div className="border-t mt-2 pt-2 font-bold">
-                                        Total: ${getSelectedProductsTotal().toFixed(2)}
-                                    </div>
+                {/* Product Form Modal */}
+                {showForm && (
+                    <div style={styles.modalOverlay}>
+                        <div style={styles.modalContent}>
+                            <h3 style={styles.modalTitle}>
+                                {editingProduct ? 'Edit Product' : 'Add New Product'}
+                            </h3>
+                            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                                {/* Form inputs with inline styles */}
+                                <div>
+                                    <label style={styles.label}>Code</label>
+                                    <input
+                                        type="text"
+                                        value={formData.code}
+                                        onChange={(e) => setFormData({ ...formData, code: e.target.value })}
+                                        style={{
+                                            ...styles.input,
+                                            ':focus': styles.inputFocus
+                                        }}
+                                        required 
+                                    />
                                 </div>
-
-                                {/* Customer Information Form */}
-                                <div className="space-y-4">
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700">Customer Name *</label>
-                                        <input
-                                            type="text"
-                                            value={orderCustomer.name}
-                                            onChange={(e) => setOrderCustomer({ ...orderCustomer, name: e.target.value })}
-                                            className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2"
-                                            placeholder="Enter customer name"
-                                            required
-                                        />
-                                    </div>
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700">Customer Phone *</label>
-                                        <input
-                                            type="tel"
-                                            value={orderCustomer.phone}
-                                            onChange={(e) => setOrderCustomer({ ...orderCustomer, phone: e.target.value })}
-                                            className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2"
-                                            placeholder="Enter customer phone"
-                                            required
-                                        />
-                                    </div>
+                                <div>
+                                    <label style={styles.label}>Name</label>
+                                    <input
+                                        type="text"
+                                        value={formData.name}
+                                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                                        style={{
+                                            ...styles.input,
+                                            ':focus': styles.inputFocus
+                                        }}
+                                        required
+                                    />
                                 </div>
-
-                                <div className="flex space-x-3 mt-6">
+                                <div>
+                                    <label style={styles.label}>Description</label>
+                                    <textarea
+                                        value={formData.description}
+                                        onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                                        style={{
+                                            ...styles.input,
+                                            ':focus': styles.inputFocus,
+                                            minHeight: '6rem',
+                                            resize: 'vertical'
+                                        }}
+                                    />
+                                </div>
+                                <div>
+                                    <label style={styles.label}>Rate</label>
+                                    <input
+                                        type="number"
+                                        step="0.01"
+                                        value={formData.rate}
+                                        onChange={(e) => setFormData({ ...formData, rate: e.target.value })}
+                                        style={{
+                                            ...styles.input,
+                                            ':focus': styles.inputFocus
+                                        }}
+                                        required
+                                    />
+                                </div>
+                                <div>
+                                    <label style={styles.label}>Image URL</label>
+                                    <input
+                                        type="url"
+                                        value={formData.image}
+                                        onChange={(e) => setFormData({ ...formData, image: e.target.value })}
+                                        style={{
+                                            ...styles.input,
+                                            ':focus': styles.inputFocus
+                                        }}
+                                    />
+                                </div>
+                                <div style={{ display: 'flex', gap: '0.75rem' }}>
                                     <button
-                                        onClick={handleCreateOrder}
-                                        disabled={creatingOrder}
-                                        className="bg-green-500 hover:bg-green-700 disabled:bg-gray-400 text-white font-bold py-2 px-4 rounded flex-1"
+                                        type="submit"
+                                        style={{
+                                            ...styles.submitButton,
+                                            ':hover': styles.submitButtonHover
+                                        }}
                                     >
-                                        {creatingOrder ? 'Creating...' : 'Confirm Order'}
+                                        {editingProduct ? 'Update' : 'Create'}
                                     </button>
                                     <button
-                                        onClick={resetOrderForm}
-                                        disabled={creatingOrder}
-                                        className="bg-gray-500 hover:bg-gray-700 disabled:bg-gray-400 text-white font-bold py-2 px-4 rounded flex-1"
+                                        type="button"
+                                        onClick={resetForm}
+                                        style={{
+                                            ...styles.cancelButton,
+                                            ':hover': styles.cancelButtonHover
+                                        }}
                                     >
                                         Cancel
                                     </button>
                                 </div>
+                            </form>
+                        </div>
+                    </div>
+                )}
+
+                {/* Order Creation Modal */}
+                {showOrderForm && (
+                    <div style={styles.modalOverlay}>
+                        <div style={styles.modalContent}>
+                            <h3 style={styles.modalTitle}>
+                                Create Order
+                            </h3>
+
+                            {/* Selected Products Summary */}
+                            <div style={{ marginBottom: '1rem', padding: '0.75rem', backgroundColor: '#f0f9ff', borderRadius: '0.5rem' }}>
+                                <h4 style={{ fontSize: '0.875rem', color: '#4b5563', marginBottom: '0.5rem' }}>Selected Products:</h4>
+                                {Array.from(selectedProducts.entries()).map(([productId, quantity]) => {
+                                    const product = products.find(p => p.id === productId);
+                                    return product ? (
+                                        <div key={productId} style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.875rem' }}>
+                                            <span>{product.name} x {quantity}</span>
+                                            <span>${(product.rate * quantity).toFixed(2)}</span>
+                                        </div>
+                                    ) : null;
+                                })}
+                                <div style={{ borderTop: '1px solid #e5e7eb', marginTop: '0.5rem', paddingTop: '0.5rem', fontWeight: 'bold' }}>
+                                    Total: ${getSelectedProductsTotal().toFixed(2)}
+                                </div>
+                            </div>
+
+                            {/* Customer Information Form */}
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                                <div>
+                                    <label style={styles.label}>Customer Name *</label>
+                                    <input
+                                        type="text"
+                                        value={orderCustomer.name}
+                                        onChange={(e) => setOrderCustomer({ ...orderCustomer, name: e.target.value })}
+                                        style={{
+                                            ...styles.input,
+                                            ':focus': styles.inputFocus
+                                        }}
+                                        placeholder="Enter customer name"
+                                        required
+                                    />
+                                </div>
+                                <div>
+                                    <label style={styles.label}>Customer Phone *</label>
+                                    <input
+                                        type="tel"
+                                        value={orderCustomer.phone}
+                                        onChange={(e) => setOrderCustomer({ ...orderCustomer, phone: e.target.value })}
+                                        style={{
+                                            ...styles.input,
+                                            ':focus': styles.inputFocus
+                                        }}
+                                        placeholder="Enter customer phone"
+                                        required
+                                    />
+                                </div>
+                            </div>
+
+                            <div style={{ display: 'flex', gap: '0.75rem', marginTop: '1rem' }}>
+                                <button
+                                    onClick={handleCreateOrder}
+                                    disabled={creatingOrder}
+                                    style={{
+                                        ...styles.submitButton,
+                                        backgroundColor: '#10b981',
+                                        ':hover': {
+                                            ...styles.submitButtonHover,
+                                            backgroundColor: '#059669'
+                                        },
+                                        ':disabled': {
+                                            backgroundColor: '#93c5bd',
+                                            cursor: 'not-allowed'
+                                        }
+                                    }}
+                                >
+                                    {creatingOrder ? 'Creating...' : 'Confirm Order'}
+                                </button>
+                                <button
+                                    onClick={resetOrderForm}
+                                    disabled={creatingOrder}
+                                    style={{
+                                        ...styles.cancelButton,
+                                        ':hover': styles.cancelButtonHover,
+                                        ':disabled': {
+                                            backgroundColor: '#93c5bd',
+                                            cursor: 'not-allowed'
+                                        }
+                                    }}
+                                >
+                                    Cancel
+                                </button>
                             </div>
                         </div>
-                    )}
+                    </div>
+                )}
 
-                    {/* Products List */}
-                    {products.length === 0 ? (
-                        <p className="text-gray-600 text-center py-8">No products found. Create your first product!</p>
-                    ) : (
-                        <div className="overflow-x-auto">
-                            <table className="min-w-full table-auto">
-                                <thead className="bg-gray-50">
-                                    <tr>
-                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Select</th>
-                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Code</th>
-                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
-                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Rate</th>
-                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Image</th>
-                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Quantity</th>
-                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody className="bg-white divide-y divide-gray-200">
-                                    {products.map((product) => (
-                                        <tr key={product.id}>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                                <input
-                                                    type="checkbox"
-                                                    checked={selectedProducts.has(product.id)}
-                                                    onChange={(e) => handleProductSelect(product.id, e.target.checked)}
-                                                    className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
-                                                />
-                                            </td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                                {product.code}
-                                            </td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                                {product.name}
-                                            </td>
-                                            <td className="px-6 py-4 text-sm text-gray-900 max-w-xs truncate">
-                                                {product.description || 'N/A'}
-                                            </td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                                ${parseFloat(product.rate).toFixed(2)}
-                                            </td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                                {product.image ? (
-                                                    <img src={product.image} alt={product.name} className="w-10 h-10 object-cover rounded" />
-                                                ) : (
-                                                    'No image'
-                                                )}
-                                            </td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                                {selectedProducts.has(product.id) ? (
-                                                    <input
-                                                        type="number"
-                                                        min="1"
-                                                        value={selectedProducts.get(product.id) || 1}
-                                                        onChange={(e) => handleQuantityChange(product.id, e.target.value)}
-                                                        className="w-20 px-2 py-1 border border-gray-300 rounded text-center"
-                                                    />
-                                                ) : (
-                                                    '-'
-                                                )}
-                                            </td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
-                                                <button
-                                                    onClick={() => handleEdit(product)}
-                                                    className="text-blue-600 hover:text-blue-900"
-                                                >
-                                                    Edit
-                                                </button>
-                                                <button
-                                                    onClick={() => handleDelete(product.id)}
-                                                    className="text-red-600 hover:text-red-900"
-                                                >
-                                                    Delete
-                                                </button>
-                                            </td>
-                                        </tr>
+                {/* Products List */}
+                {products.length === 0 ? (
+                    <p style={{ textAlign: 'center', color: '#6b7280', padding: '2rem' }}>
+                        No products found. Create your first product!
+                    </p>
+                ) : (
+                    <div style={{ overflowX: 'auto' }}>
+                        <table style={styles.table}>
+                            <thead>
+                                <tr>
+                                    {['Select', 'Code', 'Name', 'Description', 'Rate', 'Image', 'Quantity', 'Actions'].map((header) => (
+                                        <th key={header} style={styles.tableHeader}>{header}</th>
                                     ))}
-                                </tbody>
-                            </table>
-                        </div>
-                    )}
-                </div>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {products.map((product) => (
+                                    <tr key={product.id} style={styles.tableRow}>
+                                        {/* Table cells with inline styles */}
+                                        <td style={styles.tableCell}>
+                                            <input
+                                                type="checkbox"
+                                                checked={selectedProducts.has(product.id)}
+                                                onChange={(e) => handleProductSelect(product.id, e.target.checked)}
+                                                style={{ width: '1rem', height: '1rem', color: '#3b82f6' }}
+                                            />
+                                        </td>
+                                        <td style={styles.tableCell}>{product.code}</td>
+                                        <td style={styles.tableCell}>{product.name}</td>
+                                        <td style={styles.tableCell}>{product.description || 'N/A'}</td>
+                                        <td style={styles.tableCell}>${parseFloat(product.rate).toFixed(2)}</td>
+                                        <td style={styles.tableCell}>
+                                            {product.image ? (
+                                                <img 
+                                                    src={product.image} 
+                                                    alt={product.name} 
+                                                    style={{ width: '2.5rem', height: '2.5rem', objectFit: 'cover', borderRadius: '0.25rem' }} 
+                                                />
+                                            ) : (
+                                                'No image'
+                                            )}
+                                        </td>
+                                        <td style={styles.tableCell}>
+                                            {selectedProducts.has(product.id) ? (
+                                                <input
+                                                    type="number"
+                                                    min="1"
+                                                    value={selectedProducts.get(product.id) || 1}
+                                                    onChange={(e) => handleQuantityChange(product.id, e.target.value)}
+                                                    style={{
+                                                        width: '5rem',
+                                                        padding: '0.25rem',
+                                                        border: '1px solid #d1d5db',
+                                                        borderRadius: '0.25rem',
+                                                        textAlign: 'center'
+                                                    }}
+                                                />
+                                            ) : (
+                                                '-'
+                                            )}
+                                        </td>
+                                        <td style={styles.tableCell}>
+                                            <button
+                                                onClick={() => handleEdit(product)}
+                                                style={{
+                                                    ...styles.actionButton,
+                                                    ':hover': styles.actionButtonHover
+                                                }}
+                                            >
+                                                Edit
+                                            </button>
+                                            <button
+                                                onClick={() => handleDelete(product.id)}
+                                                style={{
+                                                    ...styles.deleteButton,
+                                                    ':hover': styles.deleteButtonHover
+                                                }}
+                                            >
+                                                Delete
+                                            </button>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                )}
             </div>
         </div>
     );
