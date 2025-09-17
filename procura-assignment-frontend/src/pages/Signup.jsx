@@ -15,6 +15,10 @@ const Signup = () => {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  
+  // Add password visibility states
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const styles = {
     container: {
@@ -128,6 +132,23 @@ const Signup = () => {
       fontSize: '0.75rem',
       color: '#6b7280',
       marginTop: '0.25rem',
+    },
+    passwordContainer: {
+      position: 'relative',
+      display: 'flex',
+      alignItems: 'center',
+    },
+    eyeIcon: {
+      position: 'absolute',
+      right: '0.75rem',
+      cursor: 'pointer',
+      color: '#6b7280',
+      fontSize: '1.25rem',
+      userSelect: 'none',
+      zIndex: 1,
+    },
+    eyeIconHover: {
+      color: '#3b82f6',
     }
   };
 
@@ -137,6 +158,14 @@ const Signup = () => {
       ...prev,
       [name]: value
     }));
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const toggleConfirmPasswordVisibility = () => {
+    setShowConfirmPassword(!showConfirmPassword);
   };
 
   const validateForm = () => {
@@ -263,31 +292,57 @@ const Signup = () => {
 
           <div style={styles.inputGroup}>
             <label style={styles.label} htmlFor="password">Password</label>
-            <input
-              style={styles.input}
-              type="password"
-              id="password"
-              name="password"
-              value={formData.password}
-              onChange={handleInputChange}
-              placeholder="Enter your password"
-              required
-            />
+            <div style={styles.passwordContainer}>
+              <input
+                style={{
+                  ...styles.input,
+                  paddingRight: '3rem'
+                }}
+                type={showPassword ? "text" : "password"}
+                id="password"
+                name="password"
+                value={formData.password}
+                onChange={handleInputChange}
+                placeholder="Enter your password"
+                required
+              />
+              <span 
+                style={styles.eyeIcon}
+                onClick={togglePasswordVisibility}
+                onMouseEnter={(e) => e.target.style.color = styles.eyeIconHover.color}
+                onMouseLeave={(e) => e.target.style.color = styles.eyeIcon.color}
+              >
+                {showPassword ? '🙈' : '👁️'}
+              </span>
+            </div>
             <div style={styles.passwordNote}>Must be at least 6 characters long</div>
           </div>
 
           <div style={styles.inputGroup}>
             <label style={styles.label} htmlFor="confirmPassword">Confirm Password</label>
-            <input
-              style={styles.input}
-              type="password"
-              id="confirmPassword"
-              name="confirmPassword"
-              value={formData.confirmPassword}
-              onChange={handleInputChange}
-              placeholder="Confirm your password"
-              required
-            />
+            <div style={styles.passwordContainer}>
+              <input
+                style={{
+                  ...styles.input,
+                  paddingRight: '3rem'
+                }}
+                type={showConfirmPassword ? "text" : "password"}
+                id="confirmPassword"
+                name="confirmPassword"
+                value={formData.confirmPassword}
+                onChange={handleInputChange}
+                placeholder="Confirm your password"
+                required
+              />
+              <span 
+                style={styles.eyeIcon}
+                onClick={toggleConfirmPasswordVisibility}
+                onMouseEnter={(e) => e.target.style.color = styles.eyeIconHover.color}
+                onMouseLeave={(e) => e.target.style.color = styles.eyeIcon.color}
+              >
+                {showConfirmPassword ? '🙈' : '👁️'}
+              </span>
+            </div>
           </div>
 
           <button

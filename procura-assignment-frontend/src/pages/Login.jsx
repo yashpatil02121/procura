@@ -7,6 +7,7 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   // Clear any existing tokens when login page loads to force fresh authentication
   useEffect(() => {
@@ -100,7 +101,28 @@ export default function Login() {
     link: {
       color: '#3b82f6',
       textDecoration: 'none',
+    },
+    passwordContainer: {
+      position: 'relative',
+      display: 'flex',
+      alignItems: 'center',
+    },
+    eyeIcon: {
+      position: 'absolute',
+      right: '0.75rem',
+      cursor: 'pointer',
+      color: '#6b7280',
+      fontSize: '1.25rem',
+      userSelect: 'none',
+      zIndex: 1,
+    },
+    eyeIconHover: {
+      color: '#3b82f6',
     }
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
   };
 
   const handleLogin = async (e) => {
@@ -171,18 +193,29 @@ export default function Login() {
               <label htmlFor="password" style={styles.label}>
                 Password
               </label>
-              <input 
-                id="password"
-                type="password" 
-                placeholder="Enter your password" 
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                style={{
-                  ...styles.input,
-                  ':focus': styles.inputFocus
-                }}
-                required 
-              />
+              <div style={styles.passwordContainer}>
+                <input 
+                  id="password"
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Enter your password" 
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  style={{
+                    ...styles.input,
+                    paddingRight: '3rem',
+                    ':focus': styles.inputFocus
+                  }}
+                  required 
+                />
+                <span 
+                  style={styles.eyeIcon}
+                  onClick={togglePasswordVisibility}
+                  onMouseEnter={(e) => e.target.style.color = styles.eyeIconHover.color}
+                  onMouseLeave={(e) => e.target.style.color = styles.eyeIcon.color}
+                >
+                  {showPassword ? '🙈' : '👁️'}
+                </span>
+              </div>
             </div>
             <div>
               <button 
