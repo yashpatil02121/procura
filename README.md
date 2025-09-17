@@ -160,6 +160,14 @@ If you prefer to run the application locally without Docker:
 - `POST /auth/login` - User login
 - `GET /auth/profile` - Get user profile (authenticated)
 
+#Admin Credentials
+admin@test.com
+password123
+
+#User Credentials
+user@test.com
+password123
+
 ### Products
 - `GET /products` - List all products (authenticated)
 - `POST /products` - Create new product (authenticated)
