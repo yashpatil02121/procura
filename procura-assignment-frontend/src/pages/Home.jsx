@@ -77,20 +77,15 @@ export default function Home() {
         const token = localStorage.getItem('token');
         const userData = localStorage.getItem('user');
         
-        if (!token) {
-            navigate('/login');
-            return;
-        }
-        
-        if (userData) {
+        if (token && userData) {
             setUser(JSON.parse(userData));
         }
-    }, [navigate]);
+    }, []);
 
     const handleLogout = () => {
         localStorage.removeItem('token');
         localStorage.removeItem('user');
-        navigate('/login');
+        setUser(null);
     };
 
     return (
@@ -111,26 +106,50 @@ export default function Home() {
             )}
             
             <h1 style={styles.header}>Welcome to Procura Assignment 🚀</h1>
-            <div style={styles.buttonContainer}>
-                <button 
-                    onClick={() => navigate('/products')}
-                    style={{
-                        ...styles.button,
-                        ':hover': styles.buttonHover
-                    }}
-                >
-                    Products
-                </button>
-                <button 
-                    onClick={() => navigate('/orders')}
-                    style={{
-                        ...styles.button,
-                        ':hover': styles.buttonHover
-                    }}
-                >
-                    Orders
-                </button>
-            </div>
+            
+            {user ? (
+                <div style={styles.buttonContainer}>
+                    <button 
+                        onClick={() => navigate('/products')}
+                        style={{
+                            ...styles.button,
+                            ':hover': styles.buttonHover
+                        }}
+                    >
+                        Products
+                    </button>
+                    <button 
+                        onClick={() => navigate('/orders')}
+                        style={{
+                            ...styles.button,
+                            ':hover': styles.buttonHover
+                        }}
+                    >
+                        Orders
+                    </button>
+                </div>
+            ) : (
+                <div style={styles.buttonContainer}>
+                    <button 
+                        onClick={() => navigate('/login')}
+                        style={{
+                            ...styles.button,
+                            ':hover': styles.buttonHover
+                        }}
+                    >
+                        Sign In
+                    </button>
+                    <button 
+                        onClick={() => navigate('/signup')}
+                        style={{
+                            ...styles.button,
+                            ':hover': styles.buttonHover
+                        }}
+                    >
+                        Sign Up
+                    </button>
+                </div>
+            )}
         </div>
     );
 }

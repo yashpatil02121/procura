@@ -199,9 +199,12 @@ export default function Login() {
           <div style={styles.signupLink}>
             <p>
               Don't have an account? 
-              <a href="/signup" style={styles.link}>
+              <span 
+                style={{...styles.link, cursor: 'pointer'}} 
+                onClick={() => navigate('/signup')}
+              >
                 {" "}Sign Up
-              </a>
+              </span>
             </p>
           </div>
         </div>
