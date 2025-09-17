@@ -7,7 +7,14 @@ async function bootstrap() {
 
   // Enable CORS
   app.enableCors({
-    origin: ['http://localhost:5173', 'http://localhost:5174', 'http://localhost:5175', 'http://localhost:5176', 'http://localhost:5177'], // allow frontend on different ports
+    origin: [
+      'http://localhost:5173', 
+      'http://localhost:5174', 
+      'http://localhost:5175', 
+      'http://localhost:5176', 
+      'http://localhost:5177',
+      'http://frontend:5173' // Allow Docker service communication
+    ],
     credentials: true,
   });
 
@@ -17,6 +24,8 @@ async function bootstrap() {
     whitelist: true,
   }));
 
-  await app.listen(3000);
+  const port = process.env.PORT || 3000;
+  await app.listen(port);
+  console.log(`Application is running on: http://localhost:${port}`);
 }
 bootstrap();
