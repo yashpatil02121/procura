@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
@@ -7,6 +7,13 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+
+  // Clear any existing tokens when login page loads to force fresh authentication
+  useEffect(() => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    console.log('Login page - Cleared existing tokens');
+  }, []);
 
   const styles = {
     container: {
@@ -104,11 +111,29 @@ export default function Login() {
         email,
         password,
       });
+      
+      // Store token and user data
       localStorage.setItem("token", res.data.access_token);
+      localStorage.setItem("user", JSON.stringify(res.data.user));
+      
+      console.log('Login successful - Token stored:', res.data.access_token.substring(0, 50) + '...');
+      console.log('Login successful - User stored:', res.data.user);
+      
+      // Test the auth profile endpoint
+      try {
+        const profileRes = await axios.get("http://localhost:3000/auth/profile", {
+          headers: { Authorization: `Bearer ${res.data.access_token}` }
+        });
+        console.log('Profile test successful:', profileRes.data);
+      } catch (profileErr) {
+        console.error('Profile test failed:', profileErr);
+      }
+      
       // Navigate to home page after successful login
       navigate("/");
     } catch (err) {
-      setError("Invalid email or password");
+      console.error('Login error:', err);
+      setError(err.response?.data?.message || "Invalid email or password");
     }
   };
 

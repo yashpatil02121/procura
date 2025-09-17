@@ -11,14 +11,18 @@ export interface JwtPayload {
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor() {
+    const jwtSecret = 'my-super-secret-key-2024';
+    console.log('JWT Strategy - Using secret:', jwtSecret);
+    
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
-      secretOrKey: process.env.JWT_SECRET || 'supersecret',
+      secretOrKey: jwtSecret,
     });
   }
 
   async validate(payload: JwtPayload) {
+    console.log('JWT Strategy - Validating payload:', payload);
     return { userId: payload.sub, email: payload.email, role: payload.role };
   }
 }

@@ -31,12 +31,51 @@ export class AuthService {
     return user;
   }
 
+  async register(userData: { name: string; email: string; username: string; password: string; role?: string }) {
+    // Check if user already exists
+    const existingUser = await this.profileRepo.findOne({ 
+      where: [{ email: userData.email }, { username: userData.username }] 
+    });
+    
+    if (existingUser) {
+      throw new UnauthorizedException('User already exists');
+    }
+
+    // Hash password
+    const hashedPassword = await bcrypt.hash(userData.password, 10);
+
+    // Create new user
+    const newUser = this.profileRepo.create({
+      ...userData,
+      password: hashedPassword,
+      role: userData.role || 'user',
+    });
+
+    const savedUser = await this.profileRepo.save(newUser);
+
+    // Return user without password
+    const { password, ...userResponse } = savedUser;
+    return userResponse;
+  }
+
   async login(email: string, pass: string) {
     const user = await this.validateUser(email, pass);
 
     const payload = { sub: user.id, email: user.email, role: user.role };
+    const token = this.jwtService.sign(payload);
+    
+    console.log('Auth Service - Generated token payload:', payload);
+    console.log('Auth Service - Generated token (first 50 chars):', token.substring(0, 50) + '...');
+    
     return {
-      access_token: this.jwtService.sign(payload),
+      access_token: token,
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        username: user.username,
+        role: user.role,
+      },
     };
   }
 }
